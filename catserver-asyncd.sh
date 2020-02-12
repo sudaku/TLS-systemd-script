@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # The actual program name
-declare -r myname="forged"
-declare -r game="forge"
+declare -r myname="catserver-asyncd"
+# Default game folder name
+declare -r game="catserver-async"
 
 # General rule for the variable-naming-schema:
 # Variables in capital letters may be passed through the command line others not.
@@ -14,7 +15,7 @@ declare -r game="forge"
 [[ -n "${BACKUP_PATHS}" ]] && declare -r BACKUP_PATHS=${BACKUP_PATHS} || BACKUP_PATHS="world"
 [[ -n "${BACKUP_FLAGS}" ]] && declare -r BACKUP_FLAGS=${BACKUP_FLAGS} || BACKUP_FLAGS="-z"
 [[ -n "${KEEP_BACKUPS}" ]] && declare -r KEEP_BACKUPS=${KEEP_BACKUPS} || KEEP_BACKUPS="10"
-[[ -n "${GAME_USER}" ]]    && declare -r GAME_USER=${GAME_USER}       || GAME_USER="forge"
+[[ -n "${GAME_USER}" ]]    && declare -r GAME_USER=${GAME_USER}       || GAME_USER="catserver"
 [[ -n "${MAIN_EXECUTABLE}" ]] && declare -r MAIN_EXECUTABLE=${MAIN_EXECUTABLE} || MAIN_EXECUTABLE="forge.jar"
 [[ -n "${SESSION_NAME}" ]] && declare -r SESSION_NAME=${SESSION_NAME} || SESSION_NAME="${game}"
 
@@ -300,18 +301,23 @@ backup_files() {
 		>&2 echo "The tar binaries are needed for a backup."
 		exit 11
 	fi
+	# Check for the availability of the xz binaries
+	if ! command -v xz &> /dev/null; then
+		>&2 echo "The xz binaries are needed for a backup."
+		exit 11
+	fi
 
 	echo "Starting backup..."
-	fname="$(date +%Y_%m_%d_%H.%M.%S).tar.gz"
+	fname="$(date +%Y_%m_%d_%H.%M.%S).tar.xz"
 	${SUDO_CMD} mkdir -p "${BACKUP_DEST}"
 	if ${SUDO_CMD} screen -S "${SESSION_NAME}" -Q select . > /dev/null; then
 		game_command save-off
 		game_command save-all
 		sync && wait
-		${SUDO_CMD} tar -C "${SERVER_ROOT}" -cf "${BACKUP_DEST}/${fname}" ${BACKUP_PATHS} --totals ${BACKUP_FLAGS} 2>&1 | grep -v "tar: Removing leading "
+		${SUDO_CMD} bash -c "tar -C "${SERVER_ROOT}" -cf - --totals ${BACKUP_PATHS} ${BACKUP_FLAGS} | xz -z -T4 - > "${BACKUP_DEST}/${fname}"" 2>&1 | grep -v "tar: Removing leading "
 		game_command save-on
 	else
-		${SUDO_CMD} tar -C "${SERVER_ROOT}" -cf "${BACKUP_DEST}/${fname}" ${BACKUP_PATHS} --totals ${BACKUP_FLAGS} 2>&1 | grep -v "tar: Removing leading "
+		${SUDO_CMD} bash -c "tar -C "${SERVER_ROOT}" -cf - --totals ${BACKUP_PATHS} ${BACKUP_FLAGS} | xz -z -T4 - > "${BACKUP_DEST}/${fname}"" 2>&1 | grep -v "tar: Removing leading "
 	fi
 	echo -e "\e[39;1mbackup completed\e[0m\n"
 
@@ -332,6 +338,11 @@ backup_restore() {
 	# Check for the availability of the tar binaries
 	if ! command -v tar &> /dev/null; then
 		>&2 echo "The tar binaries are needed for a backup."
+		exit 11
+	fi
+	# Check for the availability of the xz binaries
+	if ! command -v xz &> /dev/null; then
+		>&2 echo "The xz binaries are needed for a backup."
 		exit 11
 	fi
 
@@ -388,7 +399,7 @@ backup_restore() {
 	fi
 
 	echo "Restoring backup..."
-	if ${SUDO_CMD} tar -xf "${fname}" -C "${SERVER_ROOT}" 2>&1; then
+	if ${SUDO_CMD} bash -c "xz -d "${fname}" -T4 -c | tar -xf - -C "${SERVER_ROOT}"" 2>&1; then
 		echo -e "\e[39;1mRestoration completed\e[0m"
 	else
 		echo -e "\e[39;1mFailed to restore backup.\e[0m"

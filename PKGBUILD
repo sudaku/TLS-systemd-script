@@ -5,152 +5,82 @@
 ## Contributor: Philip Abernethy <chais.z3r0@gmail.com>
 ## Contributor: sowieso <sowieso@dukun.de>
 
-_ver="1.15.2_31.1.0-1"
-_minecraft_ver_latest="1.15.2"
 
-IFS="-" read -ra _ver_temp <<< "$_ver"
-IFS="_" read -ra _pkgver_temp <<< "${_ver_temp[0]}"
-IFS="." read -ra _minecraft_ver_temp <<< "${_pkgver_temp[0]}"
+_server_file="CatServer-abd368c-async.jar"
+_minecraft_ver="1.12.x"
 
-_minecraft_ver=${_pkgver_temp[0]}
-_minecraft_ver_major=${_minecraft_ver_temp[0]:-0}
-_minecraft_ver_minor=${_minecraft_ver_temp[1]:-0}
-_minecraft_ver_patch=${_minecraft_ver_temp[2]:-0}
-_forge_ver=${_pkgver_temp[1]}
-
-_pkgver=${_ver_temp[0]//_/-}
-
-if [ "$_minecraft_ver" = "$_minecraft_ver_latest" ]; then
-	pkgname="forge-server"
-	_forge_name="forge"
-else
-	pkgname="forge-server-${_minecraft_ver}"
-	_forge_name="forge-${_minecraft_ver}"
-fi
-pkgver=${_ver_temp[0]}
-pkgrel=${_ver_temp[1]}
-pkgdesc="Minecraft Forge server unit files, script and jar"
-arch=("any")
-url="https://minecraftforge.net"
-license=("custom")
-depends=("java-runtime-headless=8" "screen" "sudo" "bash" "awk" "sed")
+pkgname="catserver-async"
+pkgver=20.02.11
+pkgrel=1
+pkgdesc="Minecraft Catserver server unit files, script and jar"
+arch=('any')
+url="https://github.com/Luohuayu/CatServer"
+license=('custom')
+depends=('java-runtime-headless=8' 'screen' 'sudo' 'bash' 'awk' 'sed')
 optdepends=("tar: needed in order to create world backups"
 	"netcat: required in order to suspend an idle server")
-provides=("forge-server=${pkgver}")
-backup=("etc/conf.d/${_forge_name}")
-install="forge-server.install"
-source=("forged-backup.service"
-	"forged-backup.timer"
-	"forged.service"
-	"forged.conf"
-	"forged.sh")
-noextract=("forge-${_pkgver}.jar")
-sha512sums=('cbc7a567cd254e48e80aa97b62b6f2439ec09cde957ca0643a8ab323bb6bbdcf34ff27a5949fd2f153e736daf09b29639c3a613a8ef4fa0df16070cd58135199'
-            'a47b5a9e2262877008a5dcae3a833fe99f911631d6fdbe97b95e0451e1dd2b5a26b6f7b843dd6a8ccd4f663cf5c3bca53a89a1d3aabb363281ab6c6fb19e41a4'
-            'd6bde61a7aa479b85e35b4a3eccb9b3237a6c97f8919b3d704434f1df15672b74c7ae9ca9473eea6a0593e6e80892a2510782115185c1b7fe332720ccb78a7bd'
-            'e8b6fa8da94f11648ad3fa024d5238ab96d533a20fd1bcfd1c0e23cd1f18827ed6efc9edbdf8b2c7dd7095f2383131b2e6e641ba64d1cbce2f3ee109540bc818'
-            '76f038abf51fe1ff503118611b3e2f931349b0be9d444a521703b82406d8602099851e4006887c88d24468b6ea72e5ba1b63e8846420fb45e5f68f14aa9378d4'
-            'cc1c0b278cfc2081c0d1fb1a86e4ba309795aa47c0abb319d94a82ba3e92031d55b880722407083e8dab5ab0c9211baa8b6aadb8b5e85c9662e3ca1634c75084'
-            '3da10d63a5edee4bc8bcd3d5c2730771062f7fa58626a8c51635fbe96bfbceca3ff6937cfaad3e17f16a94ef95137f7c78cc6dac1c846a6b9a8f18d3c6355973')
+backup=("etc/conf.d/${pkgname}")
+install="${pkgname}.install"
+source=("${pkgname}d-backup.service"
+	"${pkgname}d-backup.timer"
+	"${pkgname}d.service"
+	"${pkgname}d.conf"
+	"${pkgname}d.sh")
+noextract=("${_server_file}")
+sha512sums=('2e9d27cd0aa0b504cc2f7892c6b1017dcacccc5a068c9d59251475e548b33b3f76866f674edf5c1b16dd2d6bbf601b5c2a41c4770aa84d6837ed2d94ac30d027'
+            'da7f1771a52381287ecb0e029f8b8b24021546b2ed5c1e8153c2b5b2643db0e921905faf36903da7f505563a97ac1bb39284bae042d5742895391e8495bc923f'
+            'ac20258176d027f728f77d19c66a127a2ec62dab612351a20a98aecff711e4e24411f1c80601495894e1a55e5027a9eab9a7225be48d1c1bc1a28e98973322bc'
+            'ab357f4acbe0b2966c98e2312f29b8942f780337b70aa1a7247f4ca74f92a751ae0edd9769ed5c122b195bdac20ea1b0c75dc487b0d3c1afb67ec0a01e474910'
+            '09454da8cc55e6ef8793a561d0724dccdb2ddae76f73372f6576a7331d0adbf031005eb9eab7d5ced9f927d60bca1b197a121dd56198a8c583d4f07142c4f603'
+            '18b653119351d57807a1be9c3b9c563a7ab038b6ba530d35a50186547ae03a2ce225cc0e7c8b3d568cf80650863264e62f449e04944cd2392f3c5ef3576b91aa'
+            '7f158bed6957e5285ce45a480f6a222065af5427bd48481ef24eb770ff540aa67b2d1c1ed976d216db94323017f7c7ee1dfe16e3f222b14189f9823e0b49f0f3'
+            '2c9bdefe7d022be139e7aec2e5f1cc1f83ea9d35d2c945e26422e140027b5107ce32c56f0b97e7dbf6b6edb282075df4a18c156a6ed6b064bcb10a3b4481a9aa'
+            'c890315962cbc180897094b3558e19ef2452f5ad587bb759e2af1808a86be4c925e7ba767746b2f6b54b24b27d66437593000c7406db5d5dc2824b0fff9775bb'
+            '6a21e9f6706dacb99162dd4c70ec704e3fdf283b93ca2cc1521e08e55e0727db4c7384d027d54739f100cd26c8d3d5be717715c6b21086a9bb22efb893c34fcf')
 
-# -- Forge Installer -- #
-if [ "$_minecraft_ver_minor" = 7 ]; then
-	source+=("forge-${_pkgver}-installer.jar"::"https://files.minecraftforge.net/maven/net/minecraftforge/forge/${_pkgver}-${_minecraft_ver}/forge-${_pkgver}-${_minecraft_ver}-installer.jar")
-else
-	source+=("forge-${_pkgver}-installer.jar"::"https://files.minecraftforge.net/maven/net/minecraftforge/forge/${_pkgver}/forge-${_pkgver}-installer.jar")
-fi
-
-[ "$_minecraft_ver_minor" = 5 ] && source+=("https://files.minecraftforge.net/fmllibs/fml_libs15.zip") && noextract+=("fml_libs15.zip")
-# -- /Forge Installer -- #
+# Catserver jar
+source+=("${_server_file}"::"https://github.com/Luohuayu/CatServer/releases/download/${pkgver}/${_server_file}")
 
 # -- Licenses -- #
 _licenses=()
-_license_suffix="-${pkgname}-${_pkgver}.txt"
-
-if [ "$_minecraft_ver_minor" -ge 10 ]; then
-	_branch="${_minecraft_ver_major}.${_minecraft_ver_minor}.x"
-elif [ "$_minecraft_ver_minor" -ge 7 ]; then
-	_branch="$_minecraft_ver"
-elif [ "$_minecraft_ver_minor" = 6 ]; then
-	_branch="1.6"
-else
-	_branch="v7.9"
-fi
+_license_suffix="-${pkgname}-${pkgver}.txt"
 
 _add_license() {
 	_path=$1
 	_repo=${2:-MinecraftForge}
-	_github_branch=${3:-"$_branch"}
+	_github_branch=${3:-"${_minecraft_ver}"}
 	_filename="$(basename "$_path")${_license_suffix}"
 
 	_licenses+=("$_filename")
 	source+=("$_filename"::"https://raw.githubusercontent.com/MinecraftForge/${_repo}/${_github_branch}/${_path}.txt")
 }
 
-if [ "$_minecraft_ver_minor" -ge 13 ]; then
-	_add_license "LICENSE"
-elif [ "$_minecraft_ver_minor" = 12 ]; then
-	_add_license "LICENSE-Paulscode%20IBXM%20Library"
-	_add_license "LICENSE-Paulscode%20SoundSystem%20CodecIBXM"
-	_add_license "LICENSE"
-elif [ "$_minecraft_ver_minor" -ge 7 ]; then
-	_add_license "MinecraftForge-License"
-	_add_license "Paulscode%20IBXM%20Library%20License"
-	_add_license "Paulscode%20SoundSystem%20CodecIBXM%20License"
+_add_license "LICENSE-Paulscode%20IBXM%20Library"
+_add_license "LICENSE-Paulscode%20SoundSystem%20CodecIBXM"
+_add_license "LICENSE"
 
-	case "$_minecraft_ver_minor" in
-		8) _add_license "LICENSE-fml";;
-		7) _add_license "fml/LICENSE-fml";;
-		*) _add_license "LICENSE-fml" && _add_license "LICENSE-new";;
-	esac
-elif [ "$_minecraft_ver_minor" = 6 ]; then
-	_add_license "install/MinecraftForge-License"
-	_add_license "install/Paulscode%20IBXM%20Library%20License"
-	_add_license "install/Paulscode%20SoundSystem%20CodecIBXM%20License"
-	_add_license "LICENSE-fml" "FML" "902772ed0cb6c22c4cd7ad9b0ec7a02961b5e016"
-else
-	_add_license "LICENSE-fml"
-fi
+_licenses+=("LICENSE-LGPLv3${_license_suffix}")
+source+=("LICENSE-LGPLv3${_license_suffix}"::"https://www.gnu.org/licenses/lgpl-3.0.txt")
 # -- /Licenses -- #
 
-prepare() {
-	[ "$_minecraft_ver_minor" = 10 ] && mkdir mods
-	[ "$_minecraft_ver_minor" = 5 ] && unzip fml_libs15.zip -d lib
-	java -jar "forge-${_pkgver}-installer.jar" --installServer
-}
-
 package() {
-	_server_root="${pkgdir}/srv/${_forge_name}"
+	_server_root="${pkgdir}/srv/${pkgname}"
 
-	# Install forged
-	install -Dm644 "forged-backup.service" "${pkgdir}/usr/lib/systemd/system/${_forge_name}d-backup.service"
-	install -Dm644 "forged-backup.timer" "${pkgdir}/usr/lib/systemd/system/${_forge_name}d-backup.timer"
-	install -Dm644 "forged.service" "${pkgdir}/usr/lib/systemd/system/${_forge_name}d.service"
-	install -Dm644 "forged.conf" "${pkgdir}/etc/conf.d/${_forge_name}"
-	install -Dm755 "forged.sh" "${pkgdir}/usr/bin/${_forge_name}d"
+	# Install catserver-asyncd
+	install -Dm644 "${pkgname}d-backup.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}d-backup.service"
+	install -Dm644 "${pkgname}d-backup.timer" "${pkgdir}/usr/lib/systemd/system/${pkgname}d-backup.timer"
+	install -Dm644 "${pkgname}d.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}d.service"
+	install -Dm644 "${pkgname}d.conf" "${pkgdir}/etc/conf.d/${pkgname}"
+	install -Dm755 "${pkgname}d.sh" "${pkgdir}/usr/bin/${pkgname}d"
 
-	# Install Forge
-	_forge_jar="forge-${_pkgver}.jar"
-	[ "$_minecraft_ver_minor" -le 12 ] && _forge_jar="forge-${_pkgver}-universal.jar"
-	[ "$_minecraft_ver_minor" = 7 ] && _forge_jar="forge-${_pkgver}-${_minecraft_ver}-universal.jar"
-	[ "$_minecraft_ver_minor" -le 6 ] && _forge_jar="minecraftforge-universal-${_pkgver}.jar"
-
-	install -Dm644 "$_forge_jar" "${_server_root}/$_forge_jar"
-	ln -s "$_forge_jar" "${_server_root}/forge.jar"
-	find libraries -type f -print0 | xargs -0 -i@ install -Dm644 "@" "${_server_root}/@"
-	[ "$_minecraft_ver_minor" = 5 ] && find lib -type f -print0 | xargs -0 -i@ install -Dm644 "@" "${_server_root}/@"
-
-	# Install Minecraft Server (for 1.12.2 or lower)
-	if [ "$_minecraft_ver_minor" = 5 ]; then
-		install -Dm644 "minecraft_server.${_minecraft_ver}.jar" "${_server_root}/minecraft_server.jar"
-	elif [ "$_minecraft_ver_minor" -le 12 ]; then
-		install -Dm644 "minecraft_server.${_minecraft_ver}.jar" "${_server_root}/minecraft_server.${_minecraft_ver}.jar"
-	fi
+	# Install Catserver
+	install -Dm644 "${_server_file}" "${_server_root}/${_server_file}"
+	ln -s "${_server_file}" "${_server_root}/${pkgname}.jar"
 
 	# Link log files
 	mkdir -p "${pkgdir}/var/log/"
 	install -dm2755 "${_server_root}/logs"
-	ln -s "/srv/${_forge_name}/logs" "${pkgdir}/var/log/${_forge_name}"
+	ln -s "/srv/${pkgname}/logs" "${pkgdir}/var/log/${pkgname}"
 
 	# Install licenses
 	for _license in "${_licenses[@]}"; do

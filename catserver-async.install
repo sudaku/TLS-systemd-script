@@ -1,0 +1,34 @@
+_server_name="catserver-async"
+_server_user="catserver"
+_server_root="/srv/${_server_name}"
+
+post_install() {
+	if ! getent group "${_server_user}" &>/dev/null; then
+		echo "Adding ${_server_user} system group..."
+		groupadd -r "$_server_user" 1>/dev/null
+	fi
+
+	if ! getent passwd "${_server_user}" &>/dev/null; then
+		echo "Adding ${_server_user} system user..."
+		useradd -r -g "${_server_user}" -d "${_server_root}" "${_server_user}" 1>/dev/null
+	fi
+
+	chown -R "${_server_user}:${_server_user}" "$_server_root"
+
+	echo "The world data is stored under ${_server_root} and the server runs as the ${_server_user} user to increase security."
+	echo "Use the ${_server_name}d script under /usr/bin/${_server_name}d to start, stop or backup the server."
+	echo "Adjust the configuration file under /etc/conf.d/${_server_name} to your liking."
+	echo "Make sure to change the SERVER_START_CMD variable if you want to use a JVM other than OpenJDK 8."
+	echo "Please note that you need Java 8 in order to run Catserver."
+	echo "For the server to start you have to accept the EULA in ${_server_root}/eula.txt!"
+	echo "The EULA file is generated after the first server start."
+}
+
+post_upgrade() {
+	chown -R "${_server_user}:${_server_user}" "${_server_root}"
+}
+
+post_remove() {
+	[ -d "$_server_root" ] && echo "Game saves in ${_server_root} were kept on your system."
+	echo "The ${_server_user} user was preserved on your system."
+}

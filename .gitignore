@@ -1,11 +1,10 @@
 *
-!/forged-backup.service
-!/forged-backup.timer
-!/forged.conf
-!/forged.service
-!/forged.sh
-!/forge-server.install
-!/forge-server-custom.install
+!/catserver-asyncd-backup.service
+!/catserver-asyncd-backup.timer
+!/catserver-asyncd.conf
+!/catserver-asyncd.service
+!/catserver-asyncd.sh
+!/catserver-async.install
 !/PKGBUILD
 !/.gitignore
 !/.SRCINFO
