@@ -4,7 +4,7 @@ After=local-fs.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/catserverd backup
+ExecStart=/usr/bin/catserver-asyncd backup
 User=catserver
 Group=catserver
 
