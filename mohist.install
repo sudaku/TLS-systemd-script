@@ -1,5 +1,5 @@
-_server_name="catserver-async"
-_server_user="catserver"
+_server_name="mohist"
+_server_user="mohist"
 _server_root="/srv/${_server_name}"
 
 post_install() {
@@ -19,7 +19,7 @@ post_install() {
 	echo "Use the ${_server_name}d script under /usr/bin/${_server_name}d to start, stop or backup the server."
 	echo "Adjust the configuration file under /etc/conf.d/${_server_name} to your liking."
 	echo "Make sure to change the SERVER_START_CMD variable if you want to use a JVM other than OpenJDK 8."
-	echo "Please note that you need Java 8 in order to run Catserver."
+	echo "Please note that you need Java 8 in order to run Mohist."
 	echo "For the server to start you have to accept the EULA in ${_server_root}/eula.txt!"
 	echo "The EULA file is generated after the first server start."
 }

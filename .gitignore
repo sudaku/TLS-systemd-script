@@ -1,10 +1,10 @@
 *
-!/catserver-asyncd-backup.service
-!/catserver-asyncd-backup.timer
-!/catserver-asyncd.conf
-!/catserver-asyncd.service
-!/catserver-asyncd.sh
-!/catserver-async.install
+!/mohistd-backup.service
+!/mohistd-backup.timer
+!/mohistd.conf
+!/mohistd.service
+!/mohistd.sh
+!/mohist.install
 !/PKGBUILD
 !/.gitignore
 !/.SRCINFO

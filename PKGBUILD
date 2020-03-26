@@ -6,15 +6,15 @@
 ## Contributor: sowieso <sowieso@dukun.de>
 
 
-_server_file="CatServer-abd368c-async.jar"
+_server_file="Mohist-6b9ba59-server.jar"
 _minecraft_ver="1.12.x"
 
-pkgname="catserver-async"
-pkgver=20.02.11
+pkgname="mohist"
+pkgver=r439.6b9ba59
 pkgrel=1
-pkgdesc="Minecraft Catserver server unit files, script and jar"
+pkgdesc="Minecraft Mohist server unit files, script and jar"
 arch=('any')
-url="https://github.com/Luohuayu/CatServer"
+url="https://github.com/Mohist-Community/Mohist"
 license=('custom')
 depends=('java-runtime-headless=8' 'screen' 'sudo' 'bash' 'awk' 'sed')
 optdepends=("tar: needed in order to create world backups"
@@ -27,19 +27,19 @@ source=("${pkgname}d-backup.service"
 	"${pkgname}d.conf"
 	"${pkgname}d.sh")
 noextract=("${_server_file}")
-sha512sums=('6756a921508c5b3e11d4045d406f19e2808c584963977428d4beae3dfba2441976ffd37a89992af7cd69a4683e0eb50a4e0bb40fbc1d3e4e3eb459fa612d7988'
-            'da7f1771a52381287ecb0e029f8b8b24021546b2ed5c1e8153c2b5b2643db0e921905faf36903da7f505563a97ac1bb39284bae042d5742895391e8495bc923f'
-            'ac20258176d027f728f77d19c66a127a2ec62dab612351a20a98aecff711e4e24411f1c80601495894e1a55e5027a9eab9a7225be48d1c1bc1a28e98973322bc'
-            'ab357f4acbe0b2966c98e2312f29b8942f780337b70aa1a7247f4ca74f92a751ae0edd9769ed5c122b195bdac20ea1b0c75dc487b0d3c1afb67ec0a01e474910'
-            '09454da8cc55e6ef8793a561d0724dccdb2ddae76f73372f6576a7331d0adbf031005eb9eab7d5ced9f927d60bca1b197a121dd56198a8c583d4f07142c4f603'
-            '18b653119351d57807a1be9c3b9c563a7ab038b6ba530d35a50186547ae03a2ce225cc0e7c8b3d568cf80650863264e62f449e04944cd2392f3c5ef3576b91aa'
+sha512sums=('53e2139014d0e219b89994875fd6f064ce64f1bb724b442b1e6c7cf0e4f404c8338e0d9b118b6539a92d04fd93d2b820267ef48d67f84c438676e98e97599c5c'
+            '2dd37cfd974d07384ec3d7087b70b298518de701da6d69d89fe0a3ed7488fe511e872e07783bc5f46efd560c061505098fac79c0306f225fa37333e3e3b6da3f'
+            'a5ccf6f61ec9a6b70049ce92801850bab5d1ae4967b1d96380e8127f679e4984f09e6a92185d9be2a213e035ee909a4bb1edd387859ea02d171b3db428e07f2d'
+            '9471e7fcb0008cbdf4df31a59c56b8b3392169de2be81c8eca4a40bc0980cf572684243ab77c889f557490ea9387bd01d915963c9ebe535ab325e9f95ddc4d51'
+            '26a557ad67599a102e384b226ab58d4c5525d2b76c3772c7e4b295f4a1d6f3b2b6401849d04a141a52150dcbb1c2366aa7dab74101b5b2eaf4aa6a8e9a30e39f'
+            'a5605cae8b699ab02983ec11184dc6b43b9dfb1cac1b73a62fcefcc3bbf1110b5f3ef0dbb57cdcb1734fba89482985a56fbf61d38b32f4c31203c61971e7c283'
             '7f158bed6957e5285ce45a480f6a222065af5427bd48481ef24eb770ff540aa67b2d1c1ed976d216db94323017f7c7ee1dfe16e3f222b14189f9823e0b49f0f3'
             '2c9bdefe7d022be139e7aec2e5f1cc1f83ea9d35d2c945e26422e140027b5107ce32c56f0b97e7dbf6b6edb282075df4a18c156a6ed6b064bcb10a3b4481a9aa'
             'c890315962cbc180897094b3558e19ef2452f5ad587bb759e2af1808a86be4c925e7ba767746b2f6b54b24b27d66437593000c7406db5d5dc2824b0fff9775bb'
             '6a21e9f6706dacb99162dd4c70ec704e3fdf283b93ca2cc1521e08e55e0727db4c7384d027d54739f100cd26c8d3d5be717715c6b21086a9bb22efb893c34fcf')
 
-# Catserver jar
-source+=("${_server_file}"::"https://github.com/Luohuayu/CatServer/releases/download/${pkgver}/${_server_file}")
+# Mohist jar
+source+=("${_server_file}"::"https://ci.codemc.io/job/Mohist-Community/job/Mohist-1.12.2/lastSuccessfulBuild/artifact/build/distributions/${_server_file}")
 
 # -- Licenses -- #
 _licenses=()
@@ -66,14 +66,14 @@ source+=("LICENSE-LGPLv3${_license_suffix}"::"https://www.gnu.org/licenses/lgpl-
 package() {
 	_server_root="${pkgdir}/srv/${pkgname}"
 
-	# Install catserver-asyncd
+	# Install mohist
 	install -Dm644 "${pkgname}d-backup.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}d-backup.service"
 	install -Dm644 "${pkgname}d-backup.timer" "${pkgdir}/usr/lib/systemd/system/${pkgname}d-backup.timer"
 	install -Dm644 "${pkgname}d.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}d.service"
 	install -Dm644 "${pkgname}d.conf" "${pkgdir}/etc/conf.d/${pkgname}"
 	install -Dm755 "${pkgname}d.sh" "${pkgdir}/usr/bin/${pkgname}d"
 
-	# Install Catserver
+	# Install mohist.jar
 	install -Dm644 "${_server_file}" "${_server_root}/${_server_file}"
 	ln -s "${_server_file}" "${_server_root}/${pkgname}.jar"
 

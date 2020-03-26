@@ -1,0 +1,12 @@
+[Unit]
+Description=Minecraft Mohist Server World Backup
+After=local-fs.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mohistd backup
+User=mohist
+Group=mohist
+
+[Install]
+WantedBy=multi-user.target

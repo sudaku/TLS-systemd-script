@@ -1,0 +1,13 @@
+[Unit]
+Description=Minecraft Mohist Server
+After=local-fs.target network.target multi-user.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/mohistd start
+ExecStop=/usr/bin/mohistd stop
+User=mohist
+Group=mohist
+
+[Install]
+WantedBy=multi-user.target

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # The actual program name
-declare -r myname="catserver-asyncd"
+declare -r myname="mohist"
 # Default game folder name
-declare -r game="catserver-async"
+declare -r game="mohist"
 
 # General rule for the variable-naming-schema:
 # Variables in capital letters may be passed through the command line others not.
@@ -15,7 +15,7 @@ declare -r game="catserver-async"
 [[ -n "${BACKUP_PATHS}" ]] && declare -r BACKUP_PATHS=${BACKUP_PATHS} || BACKUP_PATHS="world"
 [[ -n "${BACKUP_FLAGS}" ]] && declare -r BACKUP_FLAGS=${BACKUP_FLAGS} || BACKUP_FLAGS="-z"
 [[ -n "${KEEP_BACKUPS}" ]] && declare -r KEEP_BACKUPS=${KEEP_BACKUPS} || KEEP_BACKUPS="10"
-[[ -n "${GAME_USER}" ]]    && declare -r GAME_USER=${GAME_USER}       || GAME_USER="catserver"
+[[ -n "${GAME_USER}" ]]    && declare -r GAME_USER=${GAME_USER}       || GAME_USER="mohist"
 [[ -n "${MAIN_EXECUTABLE}" ]] && declare -r MAIN_EXECUTABLE=${MAIN_EXECUTABLE} || MAIN_EXECUTABLE="forge.jar"
 [[ -n "${SESSION_NAME}" ]] && declare -r SESSION_NAME=${SESSION_NAME} || SESSION_NAME="${game}"
 
